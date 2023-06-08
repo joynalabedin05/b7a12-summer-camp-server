@@ -1,0 +1,21 @@
+{
+    "items": [
+      {
+        "image": "path_to_image1.jpg",
+        "name": "John Smith",
+        "email": "johnsmith@example.com"
+      },
+      {
+        "image": "path_to_image2.jpg",
+        "name": "Emily Johnson",
+        "email": "emilyjohnson@example.com"
+      },
+      {
+        "image": "path_to_image3.jpg",
+        "name": "Michael Lee",
+        "email": "michaellee@example.com"
+      }
+    
+    ]
+  }
+  
