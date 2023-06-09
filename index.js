@@ -47,6 +47,7 @@ async function run() {
     const usersCollection = client.db('summerCamp').collection('users');
     const classCollection = client.db('summerCamp').collection('classes');
     const instructorCollection = client.db('summerCamp').collection('instructor');
+    const cartCollection = client.db('summerCamp').collection('carts');
 
 
      // veryfy admin
@@ -128,6 +129,40 @@ async function run() {
       const result = await usersCollection.updateOne(filter, updateDoc);
       res.send(result);
     });
+
+    app.patch('/users/instructor/:id', async(req,res)=>{
+      const id = req.params.id;
+      const filter = {_id: new ObjectId(id)};
+      const updateDoc = {
+        $set: {
+          role: 'instructor'
+        },
+      };
+      const result = await usersCollection.updateOne(filter, updateDoc);
+      res.send(result);
+    });
+
+      // cart collection API
+      app.get('/carts',verifyJWT, async(req,res)=>{
+        const email= req.query.email;
+        if(!email){
+          res.send([]);
+        }
+        const decodedEmail = req.decoded.email;
+        if(email !== decodedEmail){
+          return  res.status(404).send({error: true, message: 'access forbidden'})
+        }
+        const query = {email: email};
+        const result = await cartCollection.find(query).toArray();
+        res.send(result);
+      })
+  
+      app.post('/carts', async(req,res)=>{
+        const item = req.body;
+        // console.log(item)
+        const result = await cartCollection.insertOne(item);
+        res.send(result);
+      });
 
     // Send a ping to confirm a successful connection
     await client.db("admin").command({ ping: 1 });
