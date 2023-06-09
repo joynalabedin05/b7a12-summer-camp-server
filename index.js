@@ -76,6 +76,13 @@ async function run() {
       res.send(result);
     });
 
+    app.post('/classes',verifyJWT,  async(req,res)=>{
+      const newItem = req.body;
+      const result = await classCollection.insertOne(newItem);
+      res.send(result);
+    });
+
+
     // users related api
     app.get('/users', verifyJWT, verifyAdmin, async(req,res)=>{
       const result = await usersCollection.find().toArray();
