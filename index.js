@@ -48,6 +48,12 @@ async function run() {
     const classCollection = client.db('summerCamp').collection('classes');
     const instructorCollection = client.db('summerCamp').collection('instructor');
 
+    app.post('/jwt', (req, res)=>{
+      const user = req.body;
+      const token = jwt.sign(user, process.env.ACCESS_TOKEN,{expiresIn: '1h'});
+      res.send({token});
+    })
+
     app.get('/instructor', async(req,res)=>{
       const result  = await instructorCollection.find().toArray();
       res.send(result);
