@@ -44,7 +44,7 @@ async function run() {
   try {
     // Connect the client to the server	(optional starting in v4.7)
     await client.connect();
-
+    const usersCollection = client.db('summerCamp').collection('users');
     const classCollection = client.db('summerCamp').collection('classes');
     const instructorCollection = client.db('summerCamp').collection('instructor');
 
@@ -61,7 +61,26 @@ async function run() {
     app.get('/classes', async(req,res)=>{
       const result  = await classCollection.find().toArray();
       res.send(result);
-    })
+    });
+
+    // users related api
+    app.get('/users', async(req,res)=>{
+      const result = await usersCollection.find().toArray();
+      res.send(result);
+    });
+
+    app.post('/users', async(req,res)=>{
+      const user = req.body;
+      // console.log(user);
+      const query = {email: user.email};
+      const existingUser = await usersCollection.findOne(query);
+      console.log(existingUser);
+      if(existingUser){
+        return res.send({message: 'user already exists'})
+      }
+      const result = await usersCollection.insertOne(user);
+      res.send(result);
+    });
 
     // Send a ping to confirm a successful connection
     await client.db("admin").command({ ping: 1 });
