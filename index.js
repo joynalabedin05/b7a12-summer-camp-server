@@ -1,6 +1,6 @@
 const express = require('express');
 const cors = require('cors');
-const { MongoClient, ServerApiVersion } = require('mongodb');
+const { MongoClient, ServerApiVersion, ObjectId } = require('mongodb');
 const jwt = require('jsonwebtoken');
 
 const app = express();
@@ -48,6 +48,18 @@ async function run() {
     const classCollection = client.db('summerCamp').collection('classes');
     const instructorCollection = client.db('summerCamp').collection('instructor');
 
+
+     // veryfy admin
+     const verifyAdmin = async(req, res, next)=>{
+      const email = req.decoded.email;
+      const query = {email: email};
+      const user = await usersCollection.findOne(query);
+      if(user?.role!=='admin'){
+        return res.status(404).send({error: true, message: 'unauthorized access'});
+      }
+      next();
+    }
+
     app.post('/jwt', (req, res)=>{
       const user = req.body;
       const token = jwt.sign(user, process.env.ACCESS_TOKEN,{expiresIn: '1h'});
@@ -64,7 +76,7 @@ async function run() {
     });
 
     // users related api
-    app.get('/users', async(req,res)=>{
+    app.get('/users', verifyJWT, verifyAdmin, async(req,res)=>{
       const result = await usersCollection.find().toArray();
       res.send(result);
     });
@@ -79,6 +91,41 @@ async function run() {
         return res.send({message: 'user already exists'})
       }
       const result = await usersCollection.insertOne(user);
+      res.send(result);
+    });
+
+    // secuirty layers
+    app.get('/users/admin/:email',verifyJWT, async(req, res)=>{
+      const email = req.params.email;
+      if(req.decoded.email !==email){
+        res.send({admin: false});
+      }
+      const query = {email: email};
+      const user = await usersCollection.findOne(query);
+      const result = {admin: user?.role === 'admin'}
+      res.send(result);
+    });
+
+    app.get('/users/instructor/:email',verifyJWT, async(req, res)=>{
+      const email = req.params.email;
+      if(req.decoded.email !==email){
+        res.send({instructor: false});
+      }
+      const query = {email: email};
+      const user = await usersCollection.findOne(query);
+      const result = {instructor: user?.role === 'instructor'}
+      res.send(result);
+    });
+
+    app.patch('/users/admin/:id', async(req,res)=>{
+      const id = req.params.id;
+      const filter = {_id: new ObjectId(id)};
+      const updateDoc = {
+        $set: {
+          role: 'admin'
+        },
+      };
+      const result = await usersCollection.updateOne(filter, updateDoc);
       res.send(result);
     });
 
