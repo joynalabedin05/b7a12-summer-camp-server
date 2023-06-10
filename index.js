@@ -62,7 +62,20 @@ async function run() {
         return res.status(404).send({error: true, message: 'unauthorized access'});
       }
       next();
-    }
+    };
+
+    // veryfy instructor
+    const verifyInstructor = async(req, res, next)=>{
+      const email = req.decoded.email;
+      const query = {email: email};
+      const user = await usersCollection.findOne(query);
+      if(user?.role!=='instructor'){
+        return res.status(404).send({error: true, message: 'unauthorized access'});
+      }
+      next();
+    };
+
+    // jwt
 
     app.post('/jwt', (req, res)=>{
       const user = req.body;
@@ -79,7 +92,7 @@ async function run() {
       res.send(result);
     });
 
-    app.post('/classes',verifyJWT,  async(req,res)=>{
+    app.post('/classes',verifyJWT, verifyInstructor, async(req,res)=>{
       const newItem = req.body;
       const result = await classCollection.insertOne(newItem);
       res.send(result);
@@ -202,6 +215,13 @@ async function run() {
       const deleteResult = await cartCollection.deleteMany(query);
       res.send({insertResult, deleteResult});
     });
+
+    app.get('/payments/:email',async(req,res)=>{
+      const email = req.params.email;
+      const query = {email : email};
+      const result = await paymentCollection.find(query).toArray();
+      res.send(result);
+    })
 
     // Send a ping to confirm a successful connection
     await client.db("admin").command({ ping: 1 });
