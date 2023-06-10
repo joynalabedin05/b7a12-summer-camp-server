@@ -1,21 +1,38 @@
-{
-    "items": [
-      {
-        "image": "path_to_image1.jpg",
-        "name": "John Smith",
-        "email": "johnsmith@example.com"
-      },
-      {
-        "image": "path_to_image2.jpg",
-        "name": "Emily Johnson",
-        "email": "emilyjohnson@example.com"
-      },
-      {
-        "image": "path_to_image3.jpg",
-        "name": "Michael Lee",
-        "email": "michaellee@example.com"
-      }
-    
-    ]
+[
+  {
+    "name": "John Doe",
+    "image": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTFS-1c5a3pxHVD8-7eeq83iqeCATvWxXToiw&usqp=CAU",
+    "email": "johndoe@example.com",
+    "role": "instructor"
+  },
+  {
+    "name": "Jane Smith",
+    "image": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSZ8OYiQZhKv8zfvD_FMXrJMKE00S-sehi-AQ&usqp=CAU",
+    "email": "janesmith@example.com",
+    "role": "instructor"
+  },
+  {
+    "name": "Michael Johnson",
+    "image": "https://media.gettyimages.com/id/658647112/photo/cheerful-art-student-in-class.jpg?s=612x612&w=gi&k=20&c=k7f9YxJqLg9CUpi0-XbEyLndjeqsEZaLmVdl0XZaqQc=",
+    "email": "michaeljohnson@example.com",
+    "role": "instructor"
+  },
+  {
+    "name": "Emily Davis",
+    "image": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT6IqNd6AmSVSP4fMJawVY6IoXiBwXekcAw7Y58q9CWACXd0MBaAZmvOzC7VufLa8v6YWo&usqp=CAU",
+    "email": "emilydavis@example.com",
+    "role": "instructor"
+  },
+  {
+    "name": "David Wilson",
+    "image": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRVU2PgXZAkTZVc8pZvi8I1NBkB8SD-oGYwiJDAs1HQ8H7FOoqF8rnnF5rRkM6t4I6bNwk&usqp=CAU",
+    "email": "davidwilson@example.com",
+    "role": "instructor"
+  },
+  {
+    "name": "Sarah Thompson",
+    "image": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR_dPKBLczZwi81DIuZVfPUPPn10THcvD3HBg&usqp=CAU",
+    "email": "sarahthompson@example.com",
+    "role": "instructor"
   }
-  
+]

@@ -86,9 +86,21 @@ async function run() {
     app.get('/instructor', async(req,res)=>{
       const result  = await instructorCollection.find().toArray();
       res.send(result);
+    });
+
+    app.get('/allinstructor', async(req,res)=>{
+      const result  = await usersCollection.find({role: 'instructor'}).toArray();
+      res.send(result);
     })
+
+
     app.get('/classes', async(req,res)=>{
       const result  = await classCollection.find().toArray();
+      res.send(result);
+    });
+
+    app.get('/popularclass', async(req,res)=>{
+      const result  = await classCollection.find().sort({seats: 1}).toArray();
       res.send(result);
     });
 
@@ -219,9 +231,53 @@ async function run() {
     app.get('/payments/:email',async(req,res)=>{
       const email = req.params.email;
       const query = {email : email};
-      const result = await paymentCollection.find(query).toArray();
+      const result = await paymentCollection.find(query).sort({date: -1}).toArray();
       res.send(result);
-    })
+    }); 
+
+    app.get('/classes/:email',async(req,res)=>{
+      const email = req.params.email;
+      const query = {email : email};
+      const result = await classCollection.find(query).toArray();
+      res.send(result);
+    });
+
+
+    app.patch('/classes/approve/:id', async(req,res)=>{
+      const id = req.params.id;
+      const filter = {_id: new ObjectId(id)};
+      const updateDoc = {
+        $set: {
+          status: 'approve'
+        },
+      };
+      const result = await classCollection.updateOne(filter, updateDoc);
+      res.send(result);
+    });
+
+    app.patch('/classes/deny/:id', async(req,res)=>{
+      const id = req.params.id;
+      const filter = {_id: new ObjectId(id)};
+      const updateDoc = {
+        $set: {
+          status: 'deny'
+        },
+      };
+      const result = await classCollection.updateOne(filter, updateDoc);
+      res.send(result);
+    });
+    app.patch('/classes/feedback/:id', async(req,res)=>{
+      const id = req.params.id;
+      const filter = {_id: new ObjectId(id)};
+      const updateDoc = {
+        $set: {
+          feedback: 'your class was denied due to lack of student'
+        },
+      };
+      const result = await classCollection.updateOne(filter, updateDoc);
+      res.send(result);
+    });
+
 
     // Send a ping to confirm a successful connection
     await client.db("admin").command({ ping: 1 });
