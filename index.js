@@ -45,7 +45,7 @@ const client = new MongoClient(uri, {
 async function run() {
   try {
     // Connect the client to the server	(optional starting in v4.7)
-    await client.connect();
+    // await client.connect();
     const usersCollection = client.db('summerCamp').collection('users');
     const classCollection = client.db('summerCamp').collection('classes');
     const instructorCollection = client.db('summerCamp').collection('instructor');
@@ -206,12 +206,7 @@ async function run() {
         res.send(result);
       });
 
-      // app.get('/carts/:email',async(req,res)=>{
-      //   const email = req.params.email;
-      //   const query = {email : email};
-      //   const result = await cartCollection.find(query).toArray();
-      //   res.send(result);
-      // }); 
+     
 
       // create payment intent
     app.post('/create-payment-intent',verifyJWT, async(req,res)=>{
