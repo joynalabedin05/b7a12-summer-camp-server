@@ -206,6 +206,13 @@ async function run() {
         res.send(result);
       });
 
+      app.get('/carts/:email',async(req,res)=>{
+        const email = req.params.email;
+        const query = {email : email};
+        const result = await cartCollection.find(query).toArray();
+        res.send(result);
+      }); 
+
       // create payment intent
     app.post('/create-payment-intent',verifyJWT, async(req,res)=>{
       const {price} = req.body;
@@ -243,7 +250,7 @@ async function run() {
     });
 
 
-    app.patch('/classes/approve/:id', async(req,res)=>{
+    app.patch('/classes/approve/:id', verifyJWT, verifyAdmin, async(req,res)=>{
       const id = req.params.id;
       const filter = {_id: new ObjectId(id)};
       const updateDoc = {
@@ -255,7 +262,7 @@ async function run() {
       res.send(result);
     });
 
-    app.patch('/classes/deny/:id', async(req,res)=>{
+    app.patch('/classes/deny/:id',verifyJWT, verifyAdmin, async(req,res)=>{
       const id = req.params.id;
       const filter = {_id: new ObjectId(id)};
       const updateDoc = {
@@ -266,7 +273,7 @@ async function run() {
       const result = await classCollection.updateOne(filter, updateDoc);
       res.send(result);
     });
-    app.patch('/classes/feedback/:id', async(req,res)=>{
+    app.patch('/classes/feedback/:id', verifyJWT, verifyAdmin, async(req,res)=>{
       const id = req.params.id;
       const filter = {_id: new ObjectId(id)};
       const updateDoc = {
