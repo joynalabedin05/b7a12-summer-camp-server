@@ -206,12 +206,12 @@ async function run() {
         res.send(result);
       });
 
-      app.get('/carts/:email',async(req,res)=>{
-        const email = req.params.email;
-        const query = {email : email};
-        const result = await cartCollection.find(query).toArray();
-        res.send(result);
-      }); 
+      // app.get('/carts/:email',async(req,res)=>{
+      //   const email = req.params.email;
+      //   const query = {email : email};
+      //   const result = await cartCollection.find(query).toArray();
+      //   res.send(result);
+      // }); 
 
       // create payment intent
     app.post('/create-payment-intent',verifyJWT, async(req,res)=>{
